@@ -11,7 +11,7 @@ print("You will now be asked ten random questions")
 # create list of dict keys to pass to random.choice
 keys = list(operators)
 # use range 
-for _ in range(10):  
+for i in range(10):  
     number1 = random.randint(1, 20)
     number2 = random.randint(1, 20)
     operator = random.choice(keys)
