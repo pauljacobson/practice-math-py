@@ -1,6 +1,6 @@
 """ A script to generate random math equations for practice """
 import random
-from operator import add, sub, mul
+from operator import add, sub, mul, truediv
 
 # tries = 0
 
@@ -11,7 +11,7 @@ def gen_equations():
         '+': add,
         '-': sub,
         '*': mul,
-        # '/': truediv,
+        '/': truediv,
     }
     # Define our variables
     num1 = random.randint(1, 99)
@@ -20,12 +20,17 @@ def gen_equations():
     op = random.choice(keys) # The op variable is a random operator drawn from the list
 
     # Printing the equation variables to check equations
+    print("\nThis is for troubleshooting purposes only:")
     print(num1)
     print(num2)
     print(op)
-    print("What is {} {} {}? > ".format(num1, op, num2))
-    solution = eval(f"{num1} {op} {num2}")
-    return solution
+    print("\nWhat is {} {} {}? > ".format(num1, op, num2))
+    solution = round(eval(f"{num1} {op} {num2}"), 2)
+    print(solution)
+    if solution > 0:
+        return solution
+    else:
+        gen_equations()
 
 def ask_question():
     solution = gen_equations()
@@ -43,6 +48,6 @@ def quiz():
         else:
 			# I want to state the correct answer in the event the user gives the incorrect one
             print(f"Incorrect answer, the correct answer was ....")
-    print(f"Your score was {score} out of 5")
+    print(f"\nYour score was {score} out of 5")
 
 quiz()
