@@ -29,7 +29,7 @@ def gen_equations():
 
 def ask_question():
     solution = gen_equations()
-    answer = float(input())
+    answer = float(input()) # The function doesn't account for non-integer answers
     return answer == solution
 
 def quiz():
@@ -41,7 +41,8 @@ def quiz():
             score += 1
             print("Correct answer!")
         else:
-            print("Incorrect answer, try again.")
+			# I want to state the correct answer in the event the user gives the incorrect one
+            print(f"Incorrect answer, the correct answer was ....")
     print(f"Your score was {score} out of 5")
 
 quiz()
