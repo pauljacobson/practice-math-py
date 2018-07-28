@@ -26,7 +26,7 @@ for i in range(5):
 	print(num2)
 	print(op)
 	# Generate an equation
-	def equations():
+	def gen_equations():
 	    answer = int(input("What is {} {} {}? > ".format(num1, op, num2)))
 	    solution = eval(f"{num1} {op} {num2}")
 	    print(f"The correct answer is {solution}")
@@ -35,4 +35,4 @@ for i in range(5):
 	    else:
 	        print("Incorrect, try again")
 
-	equations()
+	gen_equations()
