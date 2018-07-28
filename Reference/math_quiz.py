@@ -1,4 +1,4 @@
-# From https://stackoverflow.com/questions/30926323/how-to-do-a-calculation-on-python-with-a-random-operator/30926409
+""" From https://stackoverflow.com/questions/30926323/how-to-do-a-calculation-on-python-with-a-random-operator/30926409 """
 
 from operator import add, mul, sub
 import random
