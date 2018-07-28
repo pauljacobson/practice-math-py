@@ -2,7 +2,7 @@
 import random
 from operator import add, sub, mul
 
-tries = 0
+# tries = 0
 
 # Generate an equation
 def gen_equations():
