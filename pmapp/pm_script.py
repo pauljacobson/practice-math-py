@@ -7,17 +7,12 @@ from operator import add, sub, mul, truediv
 # Generate an equation
 def gen_equations():
     # Create a dictionary with math operators to use in the equation
-    ops = {
-        '+': add,
-        '-': sub,
-        '*': mul,
-        '/': truediv,
-    }
+    ops = {"+": add, "-": sub, "*": mul, "/": truediv}
     # Define our variables
     num1 = random.randint(1, 99)
     num2 = random.randint(1, 99)
-    keys = list(ops) # Create a list of defined operators to use in the equations
-    op = random.choice(keys) # The op variable is a random operator drawn from the list
+    keys = list(ops)  # Create a list of defined operators to use in the equations
+    op = random.choice(keys)  # The op variable is a random operator drawn from the list
 
     # Printing the equation variables to check equations
     print("\nThis is for troubleshooting purposes only:")
@@ -32,10 +27,12 @@ def gen_equations():
     else:
         gen_equations()
 
+
 def ask_question():
     solution = gen_equations()
-    answer = float(input()) # The function doesn't account for non-integer answers
+    answer = float(input())  # The function doesn't account for non-integer answers
     return answer == solution
+
 
 def quiz():
     print("Welcome! This is a 5 question quiz.")
@@ -46,8 +43,9 @@ def quiz():
             score += 1
             print("Correct answer!")
         else:
-			# I want to state the correct answer in the event the user gives the incorrect one
+            # I want to state the correct answer in the event the user gives the incorrect one
             print(f"Incorrect answer, the correct answer was ....")
     print(f"\nYour score was {score} out of 5")
+
 
 quiz()
