@@ -9,6 +9,13 @@ var socket = io();
  */
 function sendMessage() {
   var text = document.getElementById("message-input").value;
+
+  // Validate the input
+  if (!text) {
+    alert("Please enter a message.");
+    return;
+  }
+
   socket.emit("message", { text: text });
 
   // Show the loading indicator
@@ -38,10 +45,14 @@ function hideLoadingIndicator() {
 }
 
 /**
- * Updates the messages displayed on the page by appending a new message.
- * @param {string} text - The text of the message to append.
+ * Updates the messages displayed in the chat window.
  */
-function updateMessages(text) {
+function updateMessages(message) {
   var messages = document.getElementById("messages");
-  messages.innerHTML += "<div>" + text + "</div>";
+  var newMessage = document.createElement("li");
+  newMessage.textContent = message;
+  messages.appendChild(newMessage);
 }
+
+// Add an event listener to the send button
+document.getElementById("send-button").addEventListener("click", sendMessage);
