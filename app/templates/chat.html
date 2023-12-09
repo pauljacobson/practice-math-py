@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <!-- ... include necessary CSS and JavaScript files ... -->
 </head>
+
 <body>
     <div id="chat-container">
         <!-- Chat messages -->
         <div id="messages"></div>
-        
+
         <!-- Message input -->
         <input type="text" id="message-input" placeholder="Type a message...">
         <button onclick="sendMessage()">Send</button>
@@ -19,19 +21,11 @@
         </form>
     </div>
 
-    <script type="text/javascript">
-        var socket = io();
+    <div id="loading" style="display: none;">
+        <img src="loading.gif" alt="Loading..." />
+    </div>
 
-        function sendMessage() {
-            var text = document.getElementById('message-input').value;
-            socket.emit('message', {text: text});
-        }
-
-        // Listening for responses from the server
-        socket.on('response', function(data) {
-            var messages = document.getElementById('messages');
-            messages.innerHTML += '<div>' + data.text + '</div>';
-        });
-    </script>
+    <script src="chat.js"></script>
 </body>
+
 </html>
