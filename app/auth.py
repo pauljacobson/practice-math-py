@@ -54,6 +54,3 @@ def register_user():
     db.session.commit()
     return jsonify({"success": "User created successfully"}), 201
 
-
-if __name__ == "__main__":
-    app.run(debug=True)
