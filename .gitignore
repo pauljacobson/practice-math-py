@@ -1,3 +1,9 @@
+# Environment files
+.env
+.env.*
+*.env
+*.env.*
+
 # Python files
 *.pyc
 *.pyo
