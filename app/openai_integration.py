@@ -45,6 +45,15 @@ def ask_openai(question):
             # Log an error and return None if the response is invalid
             logging.error("Invalid response from OpenAI API")
             return None
+    except openai.error.AuthenticationError:
+        logging.error("Authentication with OpenAI failed. Check your API key.")
+        return None
+    except openai.error.RateLimitError:
+        logging.error("Rate limit exceeded. Please wait a moment and try again.")
+        return None
+    except openai.error.InvalidRequestError as e:
+        logging.error(f"Invalid request: {e}")
+        return None
     except Exception as e:
         # Log an error and return None if an exception occurs
         logging.error(f"Error querying OpenAI API: {e}")
