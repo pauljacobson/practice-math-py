@@ -20,7 +20,17 @@ def create_app():
 
     # Core config from environment
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-secret-key")
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "sqlite:///app.db")
+
+    # Build a default SQLite path using an absolute path so it resolves
+    # consistently regardless of CWD (important for the debug reloader)
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    default_db = "sqlite:///" + os.path.join(basedir, "app.db")
+
+    # Handle the postgres:// -> postgresql:// rename that SQLAlchemy 1.4+ requires
+    db_url = os.getenv("DATABASE_URL", default_db)
+    if db_url.startswith("postgres://"):
+        db_url = db_url.replace("postgres://", "postgresql://", 1)
+    app.config["SQLALCHEMY_DATABASE_URI"] = db_url
 
     # Initialize extensions with this app
     db.init_app(app)

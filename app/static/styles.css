@@ -61,6 +61,84 @@ body {
     color: #333;
 }
 
+/* ---- Rendered Markdown inside bot messages ---- */
+
+.bot-message h1,
+.bot-message h2,
+.bot-message h3 {
+    margin: 8px 0 4px;
+    line-height: 1.3;
+}
+
+.bot-message h1 { font-size: 1.3em; }
+.bot-message h2 { font-size: 1.15em; }
+.bot-message h3 { font-size: 1.05em; }
+
+.bot-message p {
+    margin: 6px 0;
+}
+
+.bot-message ul,
+.bot-message ol {
+    margin: 6px 0;
+    padding-left: 20px;
+}
+
+.bot-message code {
+    background-color: #d6d6d6;
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+.bot-message pre {
+    background-color: #2d2d2d;
+    color: #f8f8f2;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin: 8px 0;
+}
+
+.bot-message pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+}
+
+.bot-message hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 10px 0;
+}
+
+.bot-message strong {
+    font-weight: 600;
+}
+
+/* ---- KaTeX math rendering ---- */
+
+.bot-message .katex-display {
+    margin: 10px 0;
+    overflow-x: auto;
+}
+
+/* ---- JSXGraph geometry diagrams ---- */
+
+.jsxgraph-container {
+    width: 400px;
+    height: 400px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.jsxgraph-error {
+    padding: 10px;
+    color: #dc3545;
+    font-style: italic;
+}
+
 #input-area {
     display: flex;
     gap: 8px;
