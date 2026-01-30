@@ -3,6 +3,7 @@
 .env.*
 *.env
 *.env.*
+!.env.example
 
 # Python files
 *.pyc
@@ -59,6 +60,9 @@ coverage.xml
 
 # Jupyter Notebook
 .ipynb_checkpoints
+
+# Uploaded files
+app/static/uploads/
 
 # IDEs and editors
 /.idea

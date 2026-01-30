@@ -1,0 +1,9 @@
+flask
+flask-sqlalchemy
+flask-socketio
+flask-login
+anthropic
+python-dotenv
+werkzeug
+pytest
+pytest-mock

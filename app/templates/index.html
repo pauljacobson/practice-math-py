@@ -5,7 +5,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Welcome to Practice Math!</h1>
-    <p>This is a basic Flask app to help with math practice.</p>
+    <div id="auth-container">
+        <h1>Welcome to Practice Math!</h1>
+        <p>Practice math with your personal AI tutor.</p>
+        <p>
+            <a href="{{ url_for('auth.login') }}">Login</a> |
+            <a href="{{ url_for('auth.register') }}">Register</a>
+        </p>
+    </div>
 </body>
 </html>

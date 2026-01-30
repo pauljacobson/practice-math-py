@@ -1,56 +1,104 @@
-import os
+"""Authentication blueprint using Flask-Login and server-side sessions.
 
-from dotenv import load_dotenv
-from flask import Flask, jsonify, request
-from flask_httpauth import HTTPTokenAuth
-from itsdangerous import BadSignature, SignatureExpired
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from werkzeug.security import check_password_hash, generate_password_hash
+Provides login, logout, and registration routes.  Replaces the previous
+itsdangerous / flask-httpauth token-based system with session cookies
+managed by Flask-Login.
+"""
 
-from .models import User, db
+from flask import Blueprint, render_template, redirect, url_for, request, flash, session
+from flask_login import login_user, logout_user, login_required
 
-load_dotenv()  # take environment variables from .env.
-s = Serializer(os.getenv("SECRET_KEY"), expires_in=3600)
+from app import db, login_manager
+from app.models import User
 
-auth = HTTPTokenAuth(scheme="Bearer")
-
-
-@auth.verify_token
-def verify_token(token):
-    try:
-        data = s.loads(token)
-    except SignatureExpired:
-        return None  # valid token, but expired
-    except BadSignature:
-        return None  # invalid token
-    user = User.query.filter_by(username=data["username"]).first()
-    return user
+# Blueprint for auth-related routes
+auth_bp = Blueprint("auth", __name__)
 
 
-@app.route("/token")
-def get_auth_token():
-    username = request.args.get("username")
-    password = request.args.get("password")
-    if username is None or password is None:
-        return jsonify({"error": "Missing username or password"}), 400
+@login_manager.user_loader
+def load_user(user_id):
+    """Callback used by Flask-Login to reload a user from the session."""
+    return db.session.get(User, int(user_id))
+
+
+# ---- Login ----
+
+@auth_bp.route("/login", methods=["GET"])
+def login():
+    """Render the login form."""
+    return render_template("login.html")
+
+
+@auth_bp.route("/login", methods=["POST"])
+def login_post():
+    """Process login credentials submitted via form or JSON."""
+    # Support both form submissions and JSON API calls
+    if request.is_json:
+        data = request.get_json()
+        username = data.get("username")
+        password = data.get("password")
+    else:
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+    if not username or not password:
+        flash("Please enter both username and password.", "error")
+        return redirect(url_for("auth.login"))
+
     user = User.query.filter_by(username=username).first()
-    if user and user.check_password(password):
-        token = s.dumps({"username": username})
-        return jsonify({"token": token.decode("ascii"), "duration": 3600})
-    return jsonify({"error": "Invalid username or password"}), 400
+
+    if user is None or not user.check_password(password):
+        flash("Invalid username or password.", "error")
+        return redirect(url_for("auth.login"))
+
+    login_user(user)
+    # Redirect to the page the user originally wanted, or chat by default
+    next_page = request.args.get("next") or url_for("main.chat")
+    return redirect(next_page)
 
 
-@app.route("/register", methods=["POST"])
-def register_user():
-    username = request.json.get("username")
-    password = request.json.get("password")
-    if username is None or password is None:
-        return jsonify({"error": "Missing username or password"}), 400
+# ---- Logout ----
+
+@auth_bp.route("/logout", methods=["POST"])
+@login_required
+def logout():
+    """Log out the current user and clear conversation history."""
+    session.pop("conversation_history", None)
+    logout_user()
+    return redirect(url_for("main.index"))
+
+
+# ---- Registration ----
+
+@auth_bp.route("/register", methods=["GET"])
+def register():
+    """Render the registration form."""
+    return render_template("register.html")
+
+
+@auth_bp.route("/register", methods=["POST"])
+def register_post():
+    """Create a new user account."""
+    if request.is_json:
+        data = request.get_json()
+        username = data.get("username")
+        password = data.get("password")
+    else:
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+    if not username or not password:
+        flash("Please enter both username and password.", "error")
+        return redirect(url_for("auth.register"))
+
     if User.query.filter_by(username=username).first() is not None:
-        return jsonify({"error": "Username already exists"}), 400
+        flash("Username already exists.", "error")
+        return redirect(url_for("auth.register"))
+
     user = User(username=username)
     user.set_password(password)
     db.session.add(user)
     db.session.commit()
-    return jsonify({"success": "User created successfully"}), 201
 
+    flash("Account created! Please log in.", "success")
+    return redirect(url_for("auth.login"))
