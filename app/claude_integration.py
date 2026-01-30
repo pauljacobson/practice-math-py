@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 client = anthropic.Anthropic()
 
 # The model to use for all requests
-MODEL = "claude-haiku-3-5-20241022"
+MODEL = "claude-haiku-4-5-20251001"
 
 # System prompt that establishes Claude's role as a math tutor
 SYSTEM_PROMPT = (
